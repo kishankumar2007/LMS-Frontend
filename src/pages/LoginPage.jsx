@@ -1,13 +1,50 @@
 import { LogIn } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useUser } from '../context/UserContext'
+import { useState } from 'react'
+import { login } from '../Api/authApi'
+import toast from 'react-hot-toast'
+import { myCourses } from '../Api/userApi'
 
-const SignupPage = () => {
+const LoginPage = () => {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const { setIsLoggedIn, setUser, setUserCourse } = useUser()
+
+
+    const navigate = useNavigate()
+
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault()
+            setIsLoading(true)
+            toast.loading("please wait")
+
+            const user = await login({ email, password })
+
+            if (user) {
+                const userCourse = await myCourses()
+                toast.success("login success")
+
+                setIsLoggedIn(true)
+                setUser(user)
+                setUserCourse(userCourse)
+
+                navigate("/")
+            }
+
+        } catch (error) {
+            toast.error(error.message)
+        } finally { () => setIsLoading(false) }
+    }
+
     return (
 
 
         <div className='w-full min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900  flex justify-center items-center'>
             <div style={{ animation: "slideInFromBottom 1s ease-out" }} className='flex max-w-md w-full items-center px-6 py-8 flex-col justify-center bg-black/15 hover:bg-black/20  border border-white/10 backdrop-blur-2xl drop-shadow-2xl rounded-lg'>
-
 
                 <div className="flex flex-col items-center space-y-4">
                     <div className='bg-linear-to-r p-2 hover:scale-110 transition-transform ease-in duration-200 rounded-lg from-cyan-500 to-purple-600'>
@@ -18,18 +55,24 @@ const SignupPage = () => {
                 </div>
 
 
-                <form className='flex flex-col  w-full h-fit py-4 px-4 space-y-2 mt-4'>
+                <form onSubmit={(e) => handleSubmit(e)} className='flex flex-col  w-full h-fit py-4 px-4 space-y-2 mt-4'>
 
                     <label className='text-gray-400 text-sm' htmlFor="fullName">
                         Email
                     </label>
-                    <input className='w-full py-2 px-4 text-zinc-300 border outline-none rounded bg-white/5 border-white/10 backdrop-blur-md placeholder:text-sm placeholder:tracking-wide focus:border-2 focus:border-purple-600 ' type="text" name="fullName" placeholder='jhon@gmail.com' required />
+                    <input
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className='w-full py-2 px-4 text-zinc-300 border outline-none rounded bg-white/5 border-white/10 backdrop-blur-md placeholder:text-sm placeholder:tracking-wide focus:border-2 focus:border-purple-600 ' type="text" name="fullName" placeholder='jhon@gmail.com' required />
 
 
                     <label className='text-gray-400 text-sm' htmlFor="fullName">
                         Password
                     </label>
-                    <input className='w-full py-2 px-4 text-zinc-300 border outline-none rounded bg-white/5 border-white/10 backdrop-blur-md placeholder:tracking-widest placeholder:text-md focus:border-2 focus:border-purple-600 ' type="text" name="fullName" placeholder='********' required />
+                    <input
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className='w-full py-2 px-4 text-zinc-300 border outline-none rounded bg-white/5 border-white/10 backdrop-blur-md placeholder:tracking-widest placeholder:text-md focus:border-2 focus:border-purple-600 ' type="text" name="fullName" placeholder='********' required />
 
                     <button className='hover:scale-105 transition-all duration-400 active:scale-95 hover:from-cyan-600 hover:to-purple-700 bg-linear-to-r from-cyan-500 to-purple-600 py-2 px-4 rounded-lg text-zinc-300 mt-4 hover:text-white' type='submit'>
                         Login
@@ -43,4 +86,4 @@ const SignupPage = () => {
     )
 }
 
-export default SignupPage
+export default LoginPage

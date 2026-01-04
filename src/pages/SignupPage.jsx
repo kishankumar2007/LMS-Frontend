@@ -1,8 +1,11 @@
 import { User } from 'lucide-react'
-import React from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const SignupPage = () => {
+    const [fullName, setFullName] = useState('')
+    const [Email, setEmail] = useState('')
+    const [Password, setPassword] = useState('')
     return (
 
 

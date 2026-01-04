@@ -20,12 +20,18 @@ import { useNavigate } from "react-router-dom"
 import TeacherNanoCard from "../components/TeacherNanoCard"
 import { teachers } from "../utils/constant"
 
+
 export default function Home() {
   const [activeFeature, setActiveFeature] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const navigate = useNavigate()
+
+
+  useEffect(() => {
+
+  }, [])
 
   const handleScroll = () => {
     if (window.scrollY > 1000) {

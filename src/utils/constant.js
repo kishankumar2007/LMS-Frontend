@@ -103,7 +103,6 @@ export const teachers = [
 ];
 
 
-
 export const courseCategories = [
   {
     id: "web-development",
@@ -230,4 +229,7 @@ export const courseCategories = [
     ]
   }
 ];
+
+
+export const BASE_URL = "http://localhost:3000/api/v1"
 

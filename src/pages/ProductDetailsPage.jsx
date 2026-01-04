@@ -1,20 +1,31 @@
 
-import { useState } from "react"
-import FAQ from "./FAQ"
+import { useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { useCourse } from "../context/CourseContext"
+import { getChapter } from "../Api/chapterApi"
+import toast from "react-hot-toast"
+import Chapter from "../components/Chapter"
 
-export default function ProductDetails() {
-    const [selectedImage, setSelectedImage] = useState(0)
-    const [quantity, setQuantity] = useState(1)
-    const [selectedSize, setSelectedSize] = useState("M")
-    const [selectedColor, setSelectedColor] = useState("Black")
+export default function ProductDetailsPage() {
 
-    const productImages = [
-        "/placeholder.svg?height=600&width=600&text=Main+Product+Image",
-        "/placeholder.svg?height=600&width=600&text=Side+View",
-        "/placeholder.svg?height=600&width=600&text=Back+View",
-        "/placeholder.svg?height=600&width=600&text=Detail+View",
-    ]
+    const { _id } = useParams()
+    const { allCourses, chapters, setChapters } = useCourse()
+    const [course] = allCourses?.filter(course => course._id == _id)
 
+    const fetchChapters = async () => {
+        try {
+            const courseChapters = await getChapter(_id)
+
+            if (!courseChapters) return
+            setChapters(courseChapters)
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
+    useEffect(() => {
+         fetchChapters()
+    }, [_id])
 
     return (
         <div className="bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 pt-16 min-h-screen">
@@ -26,16 +37,16 @@ export default function ProductDetails() {
                         {/* Main Image */}
                         <div className="relative bg-linear-to-t from-black/20 to-transparent rounded-2xl overflow-hidden group">
                             <img
-                                src={productImages[selectedImage] || "/placeholder.svg"}
+                                src={course?.avatar}
                                 alt="Premium Wireless Headphones Pro"
-                                className="w-full h-96 sm:h-[500px] object-cover transition-transform duration-500 group-hover:scale-105"
+                                className="w-full h-96 sm:h-125 object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                             {/* Sale Badge */}
                             <div className="absolute top-4 left-4">
-                                <span className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                                    25% OFF
+                                <span className="bg-linear-to-r from-cyan-500 to-purple-600 text-white px-4 py-2  rounded-full sm:text-sm text-xs font-semibold">
+                                    {course?.category}
                                 </span>
                             </div>
                         </div>
@@ -46,7 +57,7 @@ export default function ProductDetails() {
                     <div className="space-y-6">
                         {/* Product Title and Rating */}
                         <div>
-                            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Premium Wireless Headphones Pro</h1>
+                            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">{course?.name}</h1>
 
                             {/* Rating and Reviews */}
                             <div className="flex items-center space-x-4 mb-4">
@@ -78,23 +89,20 @@ export default function ProductDetails() {
                         {/* Price */}
                         <div className="bg-linear-to-tl from-black/15 to-black/20 rounded-xl p-6">
                             <div className="flex items-center space-x-4 mb-4">
-                                <span className="text-4xl font-bold text-white">$299.99</span>
-                                <span className="text-2xl text-gray-500 line-through">$399.99</span>
-                                <span className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                                    Save $100
+                                <span className="sm:text-4xl font-bold text-white">{course?.amount}</span>
+                                <span className="sm:text-2xl text-gray-500 line-through">₹6999/-</span>
+                                <span className="bg-linear-to-r from-cyan-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                    Save ₹6799/-
                                 </span>
                             </div>
-                            <div className="text-gray-400 text-sm">Free shipping on orders over $50 • 30-day return policy</div>
+                            <div className="text-gray-400 text-sm">Life time access to course</div>
                         </div>
 
                         {/* Product Description */}
                         <div>
                             <h3 className="text-xl font-semibold text-white mb-3">Description</h3>
                             <p className="text-gray-300 leading-relaxed">
-                                Experience premium audio quality with our flagship wireless headphones. Featuring advanced noise
-                                cancellation technology, premium drivers, and up to 30 hours of battery life. Perfect for music lovers,
-                                professionals, and anyone who demands exceptional sound quality. The ergonomic design ensures comfort
-                                during extended listening sessions, while the premium materials provide durability and style.
+                                {course?.description}
                             </p>
                         </div>
 
@@ -145,9 +153,36 @@ export default function ProductDetails() {
                     </div>
                 </div>
 
+
+                {/* Section Header */}
+                <div className="text-center m-12 text-white">
+                    <h2 className="text-3xl sm:text-5xl font-light tracking-tight">
+                        What you'll Learn
+                    </h2>
+                </div>
+
                 {/* Course Details */}
-                <FAQ />
+
+                {chapters?.map((chapter, idx) => (
+                    <Chapter key={idx} chapter={chapter} />
+                ))}
+
+
+            </div>
+
+            <div className="mt-12 text-center max-w-4xl w-full mx-auto px-2">
+                <div className="bg-white/2 backdrop-blur-sm rounded-2xl border border-white/8 p-8">
+                    <h3 className="text-2xl font-light mb-3 text-white">Still have questions?</h3>
+                    <p className="text-gray-400 font-light mb-6 max-w-xl mx-auto">
+                        Our team is here to provide personalized assistance for any specific questions.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <button className="bg-white text-black px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-gray-100">
+                            Contact Support
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
     )
 }
