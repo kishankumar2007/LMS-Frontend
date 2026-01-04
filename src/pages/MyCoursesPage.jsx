@@ -3,10 +3,12 @@ import EnrolledCourseCard from '../components/EnrolledCourseCard'
 import { useEffect } from "react"
 import { myCourses } from "../Api/userApi"
 import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 
 const MyCoursesPage = () => {
 
     const { userCourse, setUserCourse } = useUser()
+    const navigate = useNavigate()
 
     const fetchMyCourses = async () => {
         try {
@@ -16,6 +18,7 @@ const MyCoursesPage = () => {
             }
         } catch (error) {
             toast.error(error.message)
+            navigate("/login")
         }
     }
 
