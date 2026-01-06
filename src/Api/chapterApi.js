@@ -30,14 +30,7 @@ export const editChapter = async (chapterId, data) => {
     }
 }
 
-export const deleteChapterFile = async (chapterId, fileId) => {
-    try {
-        const res = await axios.post(`${BASE_URL}/course/chapter/${chapterId}/${fileId}/delete`, {}, { withCredentials: true })
-        console.log(res.data)
-    } catch (error) {
-        console.log(error.message)
-    }
-}
+
 
 export const deleteChapter = async (chapterId) => {
     try {

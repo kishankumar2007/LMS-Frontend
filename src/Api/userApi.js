@@ -26,7 +26,7 @@ export const myCourses = async () => {
     }
 }
 
-export const editProfile = async () => {
+export const editProfile = async (data) => {
     try {
         const res = await axios.post(`${BASE_URL}/profile/edit`, { data }, { withCredentials: true })
         console.log(res.data)

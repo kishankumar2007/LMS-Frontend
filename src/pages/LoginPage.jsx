@@ -23,7 +23,7 @@ const LoginPage = () => {
             toast.loading("please wait")
 
             const user = await login({ email, password })
-
+ ;
             if (user) {
                 const userCourse = await myCourses()
                 toast.success("login success")

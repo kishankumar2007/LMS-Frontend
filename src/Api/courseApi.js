@@ -2,17 +2,17 @@ import axios from "axios"
 import { BASE_URL } from "../utils/constant"
 
 
-export const createCourse = async (data) => {
+export const createCourse = async (name,description,avatar,instructor,amount,category) => {
     try {
-        const res = await axios.post(`${BASE_URL}/create-course`, { data }, { withCredentials: true })
-        console.log(res.data);
+        const res = await axios.post(`${BASE_URL}/create-course`, { name, description, avatar, instructor, amount, category }, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } })
 
+        return res.data
     } catch (error) {
-        console.log(error.message)
+        throw Error(error.message)
     }
 }
 
-export const editCourse = async (courseId, data) => {
+export const editCourse = async (courseId) => {
     try {
         const res = await axios.post(`${BASE_URL}/edit-course/${courseId}`, { withCredentials: true })
         console.log(res.data)
@@ -43,18 +43,31 @@ export const courseDetails = async (courseId) => {
     }
 }
 
-export const allCourse = async (page = 1, limit = 10) => {
+export const allCourse = async (page = 1, limit = 10,category='') => {
     try {
-        const { data: { course } } = await axios.get(`${BASE_URL}/feed?page=${page}&limit=${limit}`, { withCredentials: true })
-        if (!course) return null
+        const { data: { courses } } = await axios.get(`${BASE_URL}/feed?page=${page}&limit=${limit}&category=${category}`, { withCredentials: true })
 
-        return course
+        if (!courses) return null
+
+        return courses
 
     } catch (error) {
         throw Error(error.response?.data?.message || "Something went wrong!")
     }
 }
 
+
+export const adminCourses = async () => {
+    try {
+        const {data:{course}} = await axios.get(`${BASE_URL}/admin/courses`,{withCredentials:true})
+        
+        if(course){
+            return course
+        }
+    } catch (error) {
+        throw Error(error.message)
+    }
+}
 
 export const buyCourse = async (userId, courseId) => {
     try {

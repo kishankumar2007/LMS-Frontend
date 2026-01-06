@@ -4,12 +4,12 @@ import { BASE_URL } from "../utils/constant"
 
 export const signUp = async ({ fullName, email, password }) => {
     try {
-        const res = await axios.post(`${BASE_URL}/signup`, { name: fullName, email, password }, { withCredentials: true })
-        console.log(res);
-        return res.data.user
+        const {data:{data}} = await axios.post(`${BASE_URL}/register`, { name: fullName, email, password }, { withCredentials: true })
+        
+        return data
     } catch (error) {
         console.log(error?.response?.data?.message)
-        return "Signup Failed";
+       throw Error(error?.response?.data?.message)
     }
 }
 

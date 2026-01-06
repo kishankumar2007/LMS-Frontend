@@ -6,7 +6,7 @@ import { useUser } from '../context/UserContext'
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const { isLoggedIn ,user} = useUser()
-    const NavItems = [{ name: 'Home', path: "/" }, { name: "Categories", path: "/categories" }, { name: 'All Courses', path: "/courses" }, { name: "All Teachers", path: "/teachers" },{ name: "My Courses", path: "/mycourses" }]
+    const NavItems = [{ name: 'Home', path: "/" },{ name: 'All Courses', path: "/courses" },{ name: "Categories", path: "/categories" }, { name: "All Teachers", path: "/teachers" },{ name: "My Courses", path: "/mycourses" }]
     const navigate = useNavigate()
 
     const handleScroll = () => {
