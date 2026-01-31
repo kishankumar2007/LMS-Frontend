@@ -33,21 +33,15 @@ createRoot(document.getElementById("root")).render(
             <Route path="teachers" element={<TeacherPage />} />
             <Route path="courses" element={<CoursesPage />} />
             <Route path="mycourses" element={<MyCoursesPage />} />
-            <Route
-              path="course/learning/:courseId"
-              element={<LearningPage />}
-            />
-            <Route
-              path="product-details/:name/:_id"
-              element={<ProductDetailsPage />}
-            />
+            <Route path="course/learning/:courseId" element={<LearningPage />} />
+            <Route path="/product-details/:name/:id" element={<ProductDetailsPage />} />
           </Route>
-  
-            <Route path="/admin" element={<Layout /> }>
+
+          <Route path="/admin" element={<Layout />}>
             <Route path="" index element={<AdminDashboard />} />
             <Route path="/admin/add-course" element={<AddCourse />} />
             <Route path="/admin/course/:courseId/add-chapter" element={<AddChapter />} />
-            <Route path="/admin/courses" element={<MyCourses/>} />
+            <Route path="/admin/courses" element={<MyCourses />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -7,7 +7,7 @@ import { BASE_URL } from "../utils/constant";
 export default function AddChapter() {
   const { courseId } = useParams();
 
-  /* ---------------- FORM STATE ---------------- */
+
   const emptyTopic = {
     title: "",
     isFree: false,
@@ -21,7 +21,7 @@ export default function AddChapter() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isPaid, setIsPaid] = useState(true);
-  const [topics, setTopics] = useState([structuredClone(emptyTopic)]);
+  const [topics, setTopics] = useState([emptyTopic]);
 
   /* ---------------- EDIT MODE ---------------- */
   const [editingChapterId, setEditingChapterId] = useState(null);
@@ -48,7 +48,7 @@ export default function AddChapter() {
 
   /* ---------------- TOPIC HELPERS ---------------- */
   const addTopic = () => {
-    setTopics([...topics, structuredClone(emptyTopic)]);
+    setTopics([...topics, emptyTopic]);
   };
 
   const removeTopic = (index) => {
@@ -64,7 +64,9 @@ export default function AddChapter() {
 
   const moveTopic = (i, dir) => {
     const copy = [...topics];
+    console.log(dir)
     const target = i + dir;
+
     if (target < 0 || target >= copy.length) return;
     [copy[i], copy[target]] = [copy[target], copy[i]];
     setTopics(copy);
@@ -204,19 +206,19 @@ export default function AddChapter() {
     setTitle("");
     setDescription("");
     setIsPaid(true);
-    setTopics([structuredClone(emptyTopic)]);
+    setTopics([emptyTopic]);
     setUploadProgress({});
     uploadControllers.current = {};
   };
 
-  /* ---------------- UI ---------------- */
+
   return (
     <div className="min-h-screen bg-black p-6 text-white">
       <h1 className="text-3xl font-semibold text-white mb-6">
         {editingChapterId ? "Edit Chapter" : "Add Chapter"}
       </h1>
 
-      <div className="bg-gradient-to-br from-[#0f172a] to-[#020617] rounded-2xl p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
+      <div className="bg-linear-to-br from-[#0f172a] to-[#020617] rounded-2xl p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
 
         {/* LEFT FORM */}
         <div className="space-y-5">
@@ -317,7 +319,7 @@ export default function AddChapter() {
                   <iframe
                     src={`https://player.cloudinary.com/embed/?cloud_name=kishan-kumar-2007&public_id=${t.video.fileId}&resource_type=video`}
                     className="w-full h-full"
-                    allow="fullscreen"
+                    allow="fullscreen"  
                   />
                 )}
               </div>

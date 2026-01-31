@@ -2,11 +2,13 @@ import { ArrowRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useUser } from '../context/UserContext'
+import { logout } from '../Api/authApi'
+import toast from 'react-hot-toast'
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false)
-    const { isLoggedIn ,user} = useUser()
-    const NavItems = [{ name: 'Home', path: "/" },{ name: 'All Courses', path: "/courses" },{ name: "Categories", path: "/categories" }, { name: "All Teachers", path: "/teachers" },{ name: "My Courses", path: "/mycourses" }]
+    const { isLoggedIn, setIsLoggedIn, setUser, user } = useUser()
+    const NavItems = [{ name: 'Home', path: "/" }, { name: 'All Courses', path: "/courses" }, { name: "Categories", path: "/categories" }, { name: "All Teachers", path: "/teachers" }, { name: "My Courses", path: "/mycourses" }]
     const navigate = useNavigate()
 
     const handleScroll = () => {
@@ -14,6 +16,19 @@ const Navbar = () => {
             setIsScrolled(true)
         } else {
             setIsScrolled(false)
+        }
+    }
+
+    const handleClick = async () => {
+        try {
+            const response = await logout()
+
+            if (!response) return
+            toast.success(response)
+            setUser(null)
+            setIsLoggedIn(false)
+        } catch (error) {
+            toast.error(error.message)
         }
     }
 
@@ -38,7 +53,7 @@ const Navbar = () => {
 
             {
                 isLoggedIn ?
-                    <div className="relative group size-12 rounded-full bg-white/5 border border-white/10">
+                    <div onClick={handleClick} className="relative group size-12 rounded-full bg-white/5 border border-white/10">
                         <img
                             src={user?.avatar}
                             alt="Profile"

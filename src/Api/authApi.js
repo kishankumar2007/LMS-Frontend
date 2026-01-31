@@ -5,7 +5,7 @@ import { BASE_URL } from "../utils/constant"
 export const signUp = async ({ fullName, email, password }) => {
     try {
         const {data:{data}} = await axios.post(`${BASE_URL}/register`, { name: fullName, email, password }, { withCredentials: true })
-        
+
         return data
     } catch (error) {
         console.log(error?.response?.data?.message)
@@ -30,8 +30,8 @@ export const login = async ({ email, password }) => {
 export const logout = async () => {
     try {
         const res = await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true })
-        console.log(res.data.message)
+        return res.data.message
     } catch (error) {
-        console.log(error.message)
+        throw Error(error.response?.data?.message)
     }
 }

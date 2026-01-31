@@ -7,13 +7,14 @@ import { useCourse } from "../context/CourseContext";
 export default function Card({ course }) {
 
   const { name, avatar, amount, category, _id } = course
+
   const { user } = useUser()
   const { allCourses, setAllCourses } = useCourse()
   const navigate = useNavigate()
 
   const handleClick = async () => {
     try {
-      const { enrolledCourse, message } = await buyCourse(user._id, _id)
+      const { message } = await buyCourse(user._id, _id)
       toast.success(message)
       const updatedCourseList = allCourses?.filter(course => course._id !== _id)
       setAllCourses(updatedCourseList)
@@ -30,7 +31,7 @@ export default function Card({ course }) {
           decoding="async"
           src={avatar}
           alt="Product Image"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full min-h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-linear-to-t from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -55,7 +56,7 @@ export default function Card({ course }) {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
-                <span className="text-2xl font-bold text-white">{amount}</span>
+                <span className="text-2xl font-bold text-white">₹{amount}</span>
                 <span className="text-lg text-gray-500 line-through">₹6999/-</span>
               </div>
               <div className="text-sm text-orange-400 font-medium">Save ₹6799/-</div>

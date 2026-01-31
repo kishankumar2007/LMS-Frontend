@@ -8,7 +8,7 @@ export const createCourse = async (name,description,avatar,instructor,amount,cat
 
         return res.data
     } catch (error) {
-        throw Error(error.message)
+        throw Error(error.response?.data?.message)
     }
 }
 
@@ -24,8 +24,10 @@ export const editCourse = async (courseId) => {
 
 export const deleteCourse = async (courseId) => {
     try {
-        const res = await axios.post(`${BASE_URL}/delete/${courseId}`, {}, { withCredentials: true })
+
+        const res = await axios.post(`${BASE_URL}/course/delete/${courseId}`, {}, { withCredentials: true })
         console.log(res.data)
+        return res.data
     } catch (error) {
         console.log(error.message)
     }
@@ -60,7 +62,7 @@ export const allCourse = async (page = 1, limit = 10,category='') => {
 export const adminCourses = async () => {
     try {
         const {data:{course}} = await axios.get(`${BASE_URL}/admin/courses`,{withCredentials:true})
-        
+
         if(course){
             return course
         }

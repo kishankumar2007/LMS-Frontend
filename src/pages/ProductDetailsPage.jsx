@@ -1,20 +1,27 @@
 
 import { useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useCourse } from "../context/CourseContext"
 import { getChapter } from "../Api/chapterApi"
 import toast from "react-hot-toast"
 import Chapter from "../components/Chapter"
+import { buyCourse } from "../Api/courseApi"
+import { useUser } from "../context/UserContext"
 
 export default function ProductDetailsPage() {
 
-    const { _id } = useParams()
-    const { allCourses, chapters, setChapters } = useCourse()
-    const [course] = allCourses?.filter(course => course._id == _id)
+    const { id } = useParams()
+    const { allCourses, chapters, setChapters,setAllCourses } = useCourse()
+    const {user} = useUser()
+    const navigate = useNavigate()
+
+
+
+    const [course] = allCourses?.filter(course => course._id == id)
 
     const fetchChapters = async () => {
         try {
-            const courseChapters = await getChapter(_id)
+            const courseChapters = await getChapter(id)
 
             if (!courseChapters) return
             setChapters(courseChapters)
@@ -23,9 +30,21 @@ export default function ProductDetailsPage() {
         }
     }
 
+    const handleClick = async () => {
+        try {
+            const { message } = await buyCourse(user._id,id)
+            toast.success(message)
+            navigate("/mycourses")
+            const updatedCourseList = allCourses?.filter(course => course._id !== id)
+            setAllCourses(updatedCourseList)
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
     useEffect(() => {
-         fetchChapters()
-    }, [_id])
+        fetchChapters()
+    }, [id])
 
     return (
         <div className="bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 pt-16 min-h-screen">
@@ -109,7 +128,7 @@ export default function ProductDetailsPage() {
 
                         {/* Action Buttons */}
                         <div className="space-y-4">
-                            <button className="w-full active:scale-95 bg-linear-to-r from-cyan-500 to-purple-600 text-white  font-semibold py-4 px-8 rounded-xl transition-all duration-300">
+                            <button onClick={handleClick} className="w-full active:scale-95 bg-linear-to-r from-cyan-500 to-purple-600 text-white  font-semibold py-4 px-8 rounded-xl transition-all duration-300">
                                 Buy Now
                             </button>
                         </div>
@@ -155,19 +174,17 @@ export default function ProductDetailsPage() {
 
 
                 {/* Section Header */}
-                <div className="text-center m-12 text-white">
+                <div className="text-center m-12 text-white max-w-4xl mx-auto space-y-4">
                     <h2 className="text-3xl sm:text-5xl font-light tracking-tight">
                         What you'll Learn
                     </h2>
+
+                    {/* Course Details */}
+
+                    {chapters?.map((chapter, idx) => (
+                        <Chapter key={idx} chapter={chapter} />
+                    ))}
                 </div>
-
-                {/* Course Details */}
-
-                {chapters?.map((chapter, idx) => (
-                    <Chapter key={idx} chapter={chapter} />
-                ))}
-
-
             </div>
 
             <div className="mt-12 text-center max-w-4xl w-full mx-auto px-2">
