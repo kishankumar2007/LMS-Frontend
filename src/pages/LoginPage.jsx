@@ -25,13 +25,9 @@ const LoginPage = () => {
             const user = await login({ email, password })
  ;
             if (user) {
-                const userCourse = await myCourses()
                 toast.success("login success")
-
                 setIsLoggedIn(true)
                 setUser(user)
-                setUserCourse(userCourse)
-
                 navigate("/")
             }
 

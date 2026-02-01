@@ -23,7 +23,9 @@ const MyCoursesPage = () => {
     }
 
     useEffect(() => {
-        fetchMyCourses()
+        if(!userCourse){
+            fetchMyCourses()
+        }
 
     }, [])
     return (
