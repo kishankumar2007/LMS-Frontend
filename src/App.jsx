@@ -54,7 +54,7 @@ const App = () => {
       fetchAllCourses()
     }
 
-  }, [isLoggedIn])
+  }, [])
 
 
 
