@@ -4,37 +4,40 @@ import { useUser } from '../context/UserContext'
 import { useState } from 'react'
 import { login } from '../Api/authApi'
 import toast from 'react-hot-toast'
-import { myCourses } from '../Api/userApi'
+import { useAdmin } from '../context/AdminContext'
 
 const LoginPage = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
-    const { setIsLoggedIn, setUser, setUserCourse } = useUser()
+    const { setIsLoggedIn, setUser,setLoading } = useUser();
 
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
+        const toastId = toast.loading("Please wait...");
+        setLoading(true);
+
         try {
-            e.preventDefault()
-            setIsLoading(true)
-            toast.loading("please wait")
+            const loggedUser = await login({ email, password });
 
-            const user = await login({ email, password })
- ;
-            if (user) {
-                toast.success("login success")
-                setIsLoggedIn(true)
-                setUser(user)
-                navigate("/")
+            toast.dismiss(toastId);
+            toast.success("Login success");
+
+            if (loggedUser) {
+                setIsLoggedIn(true);
+                setUser(loggedUser);
+                navigate("/");
             }
-
         } catch (error) {
-            toast.error(error.message)
-        } finally { () => setIsLoading(false) }
-    }
+            toast.dismiss(toastId);
+            toast.error(error.message || "Login failed");
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
 
@@ -68,7 +71,7 @@ const LoginPage = () => {
                     <input
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className='w-full py-2 px-4 text-zinc-300 border outline-none rounded bg-white/5 border-white/10 backdrop-blur-md placeholder:tracking-widest placeholder:text-md focus:border-2 focus:border-purple-600 ' type="text" name="fullName" placeholder='********' required />
+                        className='w-full py-2 px-4 text-zinc-300 border outline-none rounded bg-white/5 border-white/10 backdrop-blur-md placeholder:tracking-widest placeholder:text-md focus:border-2 focus:border-purple-600 ' type="password" name="fullName" placeholder='********' required />
 
                     <button className='hover:scale-105 transition-all duration-400 active:scale-95 hover:from-cyan-600 hover:to-purple-700 bg-linear-to-r from-cyan-500 to-purple-600 py-2 px-4 rounded-lg text-zinc-300 mt-4 hover:text-white' type='submit'>
                         Login

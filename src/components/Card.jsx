@@ -31,7 +31,7 @@ export default function Card({ course }) {
           decoding="async"
           src={avatar}
           alt="Product Image"
-          className="w-full min-h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full max-h-72 object-cover transition-transform duration-500 group-hover:scale-110"
         />
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-linear-to-t from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

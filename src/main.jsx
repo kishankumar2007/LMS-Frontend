@@ -18,33 +18,63 @@ import AddCourse from "./Admin/AddCourse.jsx";
 import Layout from "./Admin/Layout.jsx";
 import MyCourses from "./Admin/MyCourses.jsx";
 import { AdminContextProvider } from "./context/AdminContext.jsx";
+import AuthLayout from "./layout/AuthLayout.jsx"
 import AddChapter from "./Admin/AddChapter.jsx";
+import AdminAuthLayout from "./layout/AdminAuthLayout.jsx";
 
 createRoot(document.getElementById("root")).render(
   <UserContextProvider>
-    <CourseContextProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route path="login" element={<LoginPage />} />
-            <Route path="signup" element={<SignupPage />} />
-            <Route index element={<Home />} />
-            <Route path="categories" element={<CategoriesPage />} />
-            <Route path="teachers" element={<TeacherPage />} />
-            <Route path="courses" element={<CoursesPage />} />
-            <Route path="mycourses" element={<MyCoursesPage />} />
-            <Route path="course/learning/:courseId" element={<LearningPage />} />
-            <Route path="/product-details/:name/:id" element={<ProductDetailsPage />} />
-          </Route>
 
-          <Route path="/admin" element={<Layout />}>
-            <Route path="" index element={<AdminDashboard />} />
-            <Route path="/admin/add-course" element={<AddCourse />} />
-            <Route path="/admin/course/:courseId/add-chapter" element={<AddChapter />} />
-            <Route path="/admin/courses" element={<MyCourses />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+    <CourseContextProvider>
+
+      <AdminContextProvider>
+
+        <BrowserRouter>
+
+          <Routes>
+
+            <Route path="/" element={<App />}>
+              <Route path="login" element={<LoginPage />} />
+
+              <Route path="signup" element={<SignupPage />} />
+
+              <Route index element={<Home />} />
+
+              <Route path="categories" element={<CategoriesPage />} />
+
+              <Route path="teachers" element={<TeacherPage />} />
+
+              <Route path="courses" element={<CoursesPage />} />
+
+              <Route path="mycourses" element={<AuthLayout> <MyCoursesPage /> </AuthLayout>} />
+
+              <Route path="course/learning/:courseId" element={<LearningPage />} />
+
+              <Route path="/product-details/:name/:id" element={<ProductDetailsPage />} />
+
+            </Route>
+
+
+            <Route element={<AdminAuthLayout />}>
+              <Route path="/admin" element={<Layout />}>
+
+                <Route index element={<AdminDashboard />} />
+
+                <Route path="add-course" element={<AddCourse />} />
+
+                <Route path="course/:courseId/add-chapter" element={<AddChapter />} />
+
+                <Route path="courses" element={<MyCourses />} />
+
+              </Route>
+            </Route>
+
+          </Routes>
+        </BrowserRouter>
+
+      </AdminContextProvider>
+
     </CourseContextProvider>
+
   </UserContextProvider>
 );

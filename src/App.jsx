@@ -5,12 +5,12 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useUser } from './context/UserContext'
 import toast, { Toaster } from 'react-hot-toast'
 import { getProfile, myCourses } from './Api/userApi'
-import { CourseContextProvider, useCourse } from './context/CourseContext'
+import { useCourse } from './context/CourseContext'
 import { allCourse } from './Api/courseApi'
 
 const App = () => {
   const { pathname } = useLocation()
-  const { isLoggedIn, setIsLoggedIn, setUser, setUserCourse } = useUser()
+  const { isLoggedIn, setIsLoggedIn, setLoading, setUser, setUserCourse } = useUser()
   const { allCourses, setAllCourses } = useCourse()
 
 
@@ -34,16 +34,19 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+
         const user = await getProfile()
         if (user) {
           const userCourse = await myCourses()
-
           setIsLoggedIn(true)
+          setLoading(false)
           setUser(user)
           setUserCourse(userCourse)
         }
       } catch (error) {
         console.log(error.message)
+      } finally {
+        setLoading(false)
       }
     }
     if (!isLoggedIn) {
@@ -59,14 +62,15 @@ const App = () => {
 
 
   return (
-    <>      <Toaster toastOptions={{
-      duration: 1500,
-      style: {
-        height: 40,
-        maxWidth: 250,
-        fontSize: 14
-      }
-    }} />
+    <>
+      <Toaster toastOptions={{
+        duration: 1500,
+        style: {
+          height: 40,
+          maxWidth: 250,
+          fontSize: 14
+        }
+      }} />
       {pathname === "/login" || pathname === "/signup" ? null : <Navbar />}
       <Outlet />
       {pathname === "/login" || pathname === "/signup" ? null : <Footer />}

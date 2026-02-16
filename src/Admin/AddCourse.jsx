@@ -77,6 +77,7 @@ const AddCourse = () => {
                 <option value="">Select Category</option>
                 <option value="Web Development">Web Development</option>
                 <option value="DSA">DSA</option>
+                <option value="Machine Learning">Machine Learning</option>
               </select>
 
               <input

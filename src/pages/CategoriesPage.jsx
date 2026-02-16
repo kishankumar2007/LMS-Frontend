@@ -12,9 +12,9 @@ const CategoriesPage = () => {
                 {/* Stats Section */}
                 <div className='space-y-4'>
 
-                    <h1 className='text-4xl text-zinc-200 font-black mt-4'>Course Categories</h1>
+                    <h1 className='sm:text-4xl text-3xl text-zinc-200 font-black mt-4'>Course Categories</h1>
 
-                    <p className='text-lg text-gray-400 capitalize tracking-tight max-w-4xl'>Explore 11 specialized categories of programming courses. From web development to machine learning, find the perfect learning path for your career goals.</p>
+                    <p className='sm:text-lg text-md text-gray-400 capitalize tracking-tight max-w-4xl'>Explore 11 specialized categories of programming courses. From web development to machine learning, find the perfect learning path for your career goals.</p>
 
                     <div className=" flex justify-center items-center space-x-8 flex-wrap">
                         {stats.map((item, idx) => (

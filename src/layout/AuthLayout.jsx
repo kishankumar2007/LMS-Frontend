@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router-dom'
 
 const AuthLayout = ({ children }) => {
 
-    const { isLoggedIn } = useUser()
     const navigate = useNavigate()
+    const { isLoggedIn,loading } = useUser()
 
     useEffect(() => {
+        if(loading) return
         if (!isLoggedIn) {
             navigate("/login")
         }
-    }, [navigate])
+    }, [navigate, isLoggedIn])
     return (
         <>
             {children}

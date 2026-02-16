@@ -16,7 +16,7 @@ const EnrolledCourseCard = ({ course }) => {
 
                     <div className="flex text-transparent gap-1.5">
                         {[1, 2, 3, 4, 5].map((_, idx) => (
-                            <Star size={16} fill="gold" />
+                            <Star key={idx} size={16} fill="gold" />
                         ))}
                     </div>
 
