@@ -1,21 +1,6 @@
 
 import { useState, useEffect } from "react"
-import {
-  Play,
-  ArrowRight,
-  CheckCircle,
-  Sparkles,
-  Zap,
-  Globe,
-  Users,
-  TrendingUp,
-  Star,
-  Award,
-  BookOpen,
-  Code2,
-  X,
-  ArrowUp,
-} from "lucide-react"
+import { Play, ArrowRight, CheckCircle, Sparkles, Zap, Globe, Users, TrendingUp, Star, Award, BookOpen, Code2, ArrowUp } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import TeacherNanoCard from "../components/TeacherNanoCard"
 import { teachers } from "../utils/constant"
@@ -29,9 +14,6 @@ export default function Home() {
   const navigate = useNavigate()
 
 
-  useEffect(() => {
-
-  }, [])
 
   const handleScroll = () => {
     if (window.scrollY > 1000) {
@@ -199,7 +181,6 @@ export default function Home() {
             </button>
 
             <button
-              onClick={() => setIsVideoModalOpen(true)}
               className="group flex items-center space-x-3 px-8 py-5 bg-white/10 backdrop-blur-md border border-white/20 hover:border-white/40 text-white font-semibold text-lg rounded-2xl transition-all duration-300 hover:bg-white/20"
             >
               <div className="w-12 h-12 bg-linear-to-r from-cyan-500 to-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">

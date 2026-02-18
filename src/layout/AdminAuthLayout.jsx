@@ -5,7 +5,7 @@ import { useUser } from "../context/UserContext";
 
 const AdminAuthLayout = () => {
     const { loading: adminLoading, admin } = useAdmin();
-    const { isLoggedIn, loading: userLoading } = useUser();
+    const { isLoggedIn, loading: userLoading, user } = useUser();
 
     if (adminLoading || userLoading) {
         return (
@@ -19,7 +19,7 @@ const AdminAuthLayout = () => {
         return <Navigate to="/login" replace />;
     }
 
-    if (!admin || admin.role !== "admin") {
+    if (!admin && user?.role !== "admin") {
         return <NotFound message="Unauthorized Access" />;
     }
 

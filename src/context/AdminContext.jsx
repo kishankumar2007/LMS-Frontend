@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { getProfile } from "../Api/userApi";
 
@@ -52,4 +53,6 @@ export const AdminContextProvider = ({ children }) => {
   );
 };
 
-export const useAdmin = () => useContext(AdminContext);
+export const useAdmin = () => {
+  return useContext(AdminContext);
+}

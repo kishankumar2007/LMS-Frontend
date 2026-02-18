@@ -19,7 +19,7 @@ const CategoriesPage = () => {
                     <div className=" flex justify-center items-center space-x-8 flex-wrap">
                         {stats.map((item, idx) => (
 
-                            <div className='m-2 p-4 max-w-40 w-full h-20 border border-white/10 bg-white/5 rounded-lg backdrop-blur-md drop-shadow-2xl shadow-white/5 hover:scale-105 transition-all ease-in duration-100'>
+                            <div key={idx} className='m-2 p-4 max-w-40 w-full h-20 border border-white/10 bg-white/5 rounded-lg backdrop-blur-md drop-shadow-2xl shadow-white/5 hover:scale-105 transition-all ease-in duration-100'>
 
                                 <h1 className='text-zinc-300 text-2xl font-bold'>{item.value}</h1>
                                 <span className='text-gray-400 text-xs'>

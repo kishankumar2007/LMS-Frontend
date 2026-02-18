@@ -12,7 +12,7 @@ const AuthLayout = ({ children }) => {
         if (!isLoggedIn) {
             navigate("/login")
         }
-    }, [navigate, isLoggedIn])
+    }, [navigate, isLoggedIn,loading])
     return (
         <>
             {children}

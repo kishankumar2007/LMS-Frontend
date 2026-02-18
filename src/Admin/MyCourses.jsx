@@ -1,4 +1,4 @@
-import { Plus, Trash } from "lucide-react";
+import { Book, Plus, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAdmin } from "../context/AdminContext";
 import { adminCourses as fetchAdminCourses, deleteCourse } from "../Api/courseApi";
@@ -101,9 +101,18 @@ const MyCourses = () => {
                 <th className="text-left py-3 px-2">Delete</th>
               </tr>
             </thead>
-
+              {adminCourses?.length === 0 && (
+                <tbody>
+                  <tr>
+                    <td colSpan="8" className="text-center py-6 text-gray-500 ">
+                      <Book size={22} className=" inline-block mx-4 text-purple-700" />
+                      No courses available
+                    </td>
+                  </tr>
+                </tbody>
+              )}
             <tbody>
-              {adminCourses?.map((course, idx) => (
+              { adminCourses?.map((course, idx) => (
                 <tr
                   key={course._id}
                   className="border-b border-gray-800 text-gray-400"
@@ -115,7 +124,7 @@ const MyCourses = () => {
                   </td>
                   <td className="py-4 px-2">₹{course?.amount}</td>
 
-      
+
                   <td className="py-4 px-2">
                     <select
                       className="px-3 py-1 rounded-full text-xs border-none outline-none"

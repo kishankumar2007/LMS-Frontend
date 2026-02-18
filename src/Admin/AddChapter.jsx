@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { BASE_URL } from "../utils/constant";
+import { addChapter, editChapter as EditChapter, getChapter } from "../Api/chapterApi";
 
 export default function AddChapter() {
   const { courseId } = useParams();
@@ -14,7 +15,7 @@ export default function AddChapter() {
     video: {
       fileId: "",
       preview: "",
-      status: "idle" // idle | uploading | success | error
+      status: "idle"
     }
   };
 
@@ -23,30 +24,32 @@ export default function AddChapter() {
   const [isPaid, setIsPaid] = useState(true);
   const [topics, setTopics] = useState([emptyTopic]);
 
-  /* ---------------- EDIT MODE ---------------- */
+
   const [editingChapterId, setEditingChapterId] = useState(null);
 
-  /* ---------------- EXISTING CHAPTERS ---------------- */
+
   const [chapters, setChapters] = useState([]);
 
-  /* ---------------- UPLOAD ---------------- */
+
   const uploadControllers = useRef({});
   const [uploadProgress, setUploadProgress] = useState({});
 
-  /* ---------------- FETCH ---------------- */
+
   const fetchChapters = async () => {
-    const res = await axios.get(
-      `${BASE_URL}/course/${courseId}/chapters`,
-      { withCredentials: true }
-    );
-    setChapters(res.data.chapters || []);
+    try {
+      const res = await getChapter(courseId)
+      setChapters(res || []);
+    } catch (error) {
+      toast.error(error.message)
+      console.log(error.message)
+    }
   };
 
   useEffect(() => {
     fetchChapters();
   }, [courseId]);
 
-  /* ---------------- TOPIC HELPERS ---------------- */
+
   const addTopic = () => {
     setTopics([...topics, emptyTopic]);
   };
@@ -72,7 +75,7 @@ export default function AddChapter() {
     setTopics(copy);
   };
 
-  /* ---------------- VIDEO UPLOAD ---------------- */
+
   const uploadVideo = async (file, index) => {
     if (!file) return;
 
@@ -118,7 +121,6 @@ export default function AddChapter() {
     }
   };
 
-  /* ---------------- VALIDATION ---------------- */
   const canSaveChapter = () => {
     if (!title.trim()) return false;
     if (topics.length === 0) return false;
@@ -132,7 +134,7 @@ export default function AddChapter() {
     return true;
   };
 
-  /* ---------------- SAVE / UPDATE ---------------- */
+
   const saveChapter = async () => {
     if (!canSaveChapter()) {
       return toast.error("Fix errors before saving chapter");
@@ -150,27 +152,28 @@ export default function AddChapter() {
       })),
     };
 
-    if (editingChapterId) {
-      await axios.patch(
-        `${BASE_URL}/course/chapter/${editingChapterId}`,
-        payload,
-        { withCredentials: true }
-      );
-      toast.success("Chapter updated");
-    } else {
-      await axios.post(
-        `${BASE_URL}/course/${courseId}/chapter/create`,
-        payload,
-        { withCredentials: true }
-      );
-      toast.success("Chapter created");
-    }
+    try {
+      if (editingChapterId) {
+        const res = EditChapter(editingChapterId, payload)
+        if (res) {
+          toast.success("Chapter updated");
+          fetchChapters()
+        }
+      } else {
+        const isSaved = await addChapter(courseId, payload)
 
+        if (isSaved) toast.success("Chapter created");
+      }
+
+    } catch (error) {
+      toast.error(error.message)
+      console.log(error.message)
+    }
     resetForm();
     fetchChapters();
   };
 
-  /* ---------------- EDIT / DELETE ---------------- */
+
   const editChapter = (chapter) => {
     setEditingChapterId(chapter._id);
     setTitle(chapter.title);
@@ -297,11 +300,10 @@ export default function AddChapter() {
           <button
             onClick={saveChapter}
             disabled={!canSaveChapter()}
-            className={`w-full py-3 rounded-xl font-semibold ${
-              canSaveChapter()
-                ? "bg-purple-700 hover:bg-purple-600"
-                : "bg-gray-700 cursor-not-allowed"
-            }`}
+            className={`w-full py-3 rounded-xl font-semibold ${canSaveChapter()
+              ? "bg-purple-700 hover:bg-purple-600"
+              : "bg-gray-700 cursor-not-allowed"
+              }`}
           >
             {editingChapterId ? "Update Chapter" : "Save Chapter"}
           </button>
@@ -319,7 +321,7 @@ export default function AddChapter() {
                   <iframe
                     src={`https://player.cloudinary.com/embed/?cloud_name=kishan-kumar-2007&public_id=${t.video.fileId}&resource_type=video`}
                     className="w-full h-full"
-                    allow="fullscreen"  
+                    allow="fullscreen"
                   />
                 )}
               </div>

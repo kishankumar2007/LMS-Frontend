@@ -9,7 +9,6 @@ import NotFound from "../components/NotFound"
 const MyCoursesPage = () => {
 
     const { userCourse, setUserCourse } = useUser()
-    const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
@@ -17,7 +16,6 @@ const MyCoursesPage = () => {
     const fetchMyCourses = async () => {
         try {
             setLoading(true)
-            setError(null)
             const courses = await myCourses()
             if (courses) {
                 setUserCourse(courses)

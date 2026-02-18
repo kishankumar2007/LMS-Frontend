@@ -2,9 +2,9 @@ import axios from "axios"
 import { BASE_URL } from "../utils/constant"
 
 
-export const signUp = async ({ fullName, email, password }) => {
+export const signUp = async ({ fullName, email, password,role }) => {
     try {
-        const {data:{data}} = await axios.post(`${BASE_URL}/register`, { name: fullName, email, password }, { withCredentials: true })
+        const {data:{data}} = await axios.post(`${BASE_URL}/register`, { name: fullName, email, password,role }, { withCredentials: true })
 
         return data
     } catch (error) {
@@ -32,6 +32,6 @@ export const logout = async () => {
         const res = await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true })
         return res.data.message
     } catch (error) {
-        throw Error(error.response?.data?.message)
+        throw Error(error.response?.data?.message || "Logout failed")
     }
 }

@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState } from "react";
 
 
@@ -15,6 +16,7 @@ export const CourseContextProvider = ({ children }) => {
         </CourseContext.Provider>
     )
 }
+
 
 
 

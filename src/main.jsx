@@ -21,6 +21,7 @@ import { AdminContextProvider } from "./context/AdminContext.jsx";
 import AuthLayout from "./layout/AuthLayout.jsx"
 import AddChapter from "./Admin/AddChapter.jsx";
 import AdminAuthLayout from "./layout/AdminAuthLayout.jsx";
+import NotFound from "./components/NotFound.jsx";
 
 createRoot(document.getElementById("root")).render(
   <UserContextProvider>
@@ -66,7 +67,9 @@ createRoot(document.getElementById("root")).render(
 
                 <Route path="courses" element={<MyCourses />} />
 
+
               </Route>
+              <Route path="*" element={<NotFound />} />
             </Route>
 
           </Routes>

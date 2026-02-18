@@ -8,13 +8,20 @@ const SignupPage = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     const res = await signUp({ fullName, email, password });
-      if(res){
-        console.log(res)
+
+      if ([fullName, email, password, role].some(field => field.trim() === "")) {
+        toast.error("All fields are required.")
+        return
+      }
+
+      const res = await signUp({ fullName, email, password, role });
+      if (res) {
+
         toast.success("Register Success")
       }
     } catch (error) {
@@ -80,6 +87,32 @@ const SignupPage = () => {
             placeholder="********"
             required
           />
+
+          <div className="flex gap-4 text-md capitalize text-gray-400 mx-auto mt-2">
+            <span>Role</span>
+
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                name="role"
+                value="user"
+                className="accent-purple-700"
+                onChange={(e) => setRole(e.target.value)}
+              />
+              user
+            </label>
+
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                name="role"
+                value="admin"
+                className="accent-purple-700"
+                onChange={(e) => setRole(e.target.value)}
+              />
+              tutor
+            </label>
+          </div>
 
           <button
             className="hover:scale-105 transition-all duration-400 active:scale-95 hover:from-cyan-600 hover:to-purple-700 bg-linear-to-r from-cyan-500 to-purple-600 py-2 px-4 rounded-lg text-zinc-300 mt-4 hover:text-white"

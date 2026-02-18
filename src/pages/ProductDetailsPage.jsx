@@ -17,7 +17,7 @@ export default function ProductDetailsPage() {
 
 
 
-    const [course] = allCourses?.filter(course => course._id == id)
+    const [course] = allCourses && allCourses.filter(course => course?._id == id)
 
     const fetchChapters = async () => {
         try {

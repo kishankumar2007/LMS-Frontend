@@ -13,7 +13,8 @@ const LearningPage = () => {
 
   const fetchChapters = async () => {
     try {
-      setCurrentVideo(null) && setChapters([]);
+      setCurrentVideo(null)
+      setChapters([]);
       const res = await getChapter(courseId);
       setChapters(res);
     } catch (error) {
@@ -23,7 +24,7 @@ const LearningPage = () => {
 
   useEffect(() => {
     fetchChapters();
-  }, [courseId]);
+  },[courseId]);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 text-white">

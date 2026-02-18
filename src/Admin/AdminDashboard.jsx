@@ -49,7 +49,7 @@ export default function AdminDashboard() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">LMS Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
           <p className="text-gray-400">
             Monitor courses, students, and learning progress
           </p>

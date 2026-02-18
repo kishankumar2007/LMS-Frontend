@@ -4,7 +4,6 @@ import { useUser } from '../context/UserContext'
 import { useState } from 'react'
 import { login } from '../Api/authApi'
 import toast from 'react-hot-toast'
-import { useAdmin } from '../context/AdminContext'
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
