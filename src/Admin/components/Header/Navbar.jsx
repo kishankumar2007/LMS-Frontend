@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown, Search, Bell, User } from "lucide-react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../Api/authApi";
 import toast from "react-hot-toast";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef(null);
+  const navigate = useNavigate();
 
   const navLinks = [
     { name: "Home", path: "/admin" },
@@ -52,7 +53,7 @@ export default function Navbar() {
       if (!res) throw Error("Logout failed")
 
       toast.success(res)
-      Navigate("/", { replace: true });
+      navigate("/login")
 
     } catch (error) {
       toast.error(error.message)
